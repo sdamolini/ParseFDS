@@ -6,7 +6,7 @@ import numpy as np
 from model import *
 
 UPLOAD_FOLDER = './uploads'
-OUTPUT_FOLDER = 'output'
+OUTPUT_FOLDER = './output'
 ALLOWED_EXTENSIONS = {'txt', 'out'}
 
 app = Flask(__name__)
@@ -37,9 +37,10 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            FDS2Excel(input_file=os.path.join(app.config['UPLOAD_FOLDER'], filename), output_name=OUTPUT_FOLDER+'/'+"output.xlsx")
+            FDS2Excel(os.path.join(app.config['UPLOAD_FOLDER'], filename), OUTPUT_FOLDER+"/"+"output.xlsx")
+
             # return ("UPLOADED:" + filename)
-            return send_file(OUTPUT_FOLDER+'/'+"output.xlsx", attachment_filename='output.xlsx')
+            return send_file(OUTPUT_FOLDER+"/"+"output.xlsx", attachment_filename='output.xlsx')
 
     return render_template('index.html')
 
