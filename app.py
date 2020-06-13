@@ -44,10 +44,10 @@ def upload_file():
                 os.remove(os.path.join(app.config['OUTPUT_FOLDER'], f))
 
             ## Run the parsing
-            FDS2Excel(os.path.join(app.config['UPLOAD_FOLDER'], filename), os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"))
+            FDS2Excel(os.path.join(app.config['UPLOAD_FOLDER'], filename), os.path.join(app.config['OUTPUT_FOLDER'], filename+".xlsx"))
 
             # return ("UPLOADED:" + filename)
-            return send_file(os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"))
+            return send_file(os.path.join(app.config['OUTPUT_FOLDER'], filename+".xlsx"), as_attachment=True)
 
     return render_template('index.html')
 
