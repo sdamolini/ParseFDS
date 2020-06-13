@@ -41,7 +41,7 @@ def upload_file():
             ## clear output folder
             files = os.listdir(app.config['OUTPUT_FOLDER'])
             for f in files:
-                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
+                os.remove(os.path.join(app.config['OUTPUT_FOLDER'], f))
 
             ## Run the parsing
             FDS2Excel(os.path.join(app.config['UPLOAD_FOLDER'], filename), os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"))
