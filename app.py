@@ -11,6 +11,7 @@ ALLOWED_EXTENSIONS = {'txt', 'out'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and \
