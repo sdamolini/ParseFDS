@@ -15,11 +15,13 @@
   <div class="upload">
 	<h1>ParseFDS v1.0</h1>
     <!-- Main Input For Receiving Query to our ML -->
-    <form action = "http://localhost:5000/uploader" method = "POST" 
-    enctype = "multipart/form-data">
-    <input type = "file" name = "file" />
-    <input type = "submit"/>
- </form>  
+    <form id="package_form" action="" method="POST">
+      <div>
+        <p>Upload Output from FDS (any text format):</p>
+        <p><input id="upload_button" type="file" class="btn btn-default btn-xs" name="file"></p>
+        <p><input id="submit_button" type="submit" class="btn btn-success" value="Upload">
+      </div>
+    </form>
   <br>
   <br>
 
