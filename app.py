@@ -1,29 +1,41 @@
-import numpy as np
+import os
 from flask import Flask, request, jsonify, render_template
-import argparse
 from werkzeug.utils import secure_filename
+import argparse
+import numpy as np
 
+UPLOAD_FOLDER = './uploads'
+ALLOWED_EXTENSIONS = {'txt', 'out'}
 
-# create flask app
 app = Flask(__name__)
-
-UPLOAD_FOLDER = 'uploads/'
-MAX_CONTENT_LENGTH = 500*1000*1000
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 
-# home page
-@app.route('/')
-def home():
-   return render_template('index.html')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/uploader', methods = ['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_file():
-   if request.method == 'POST':
-      f = request.files['file']
-      f.save(secure_filename(f.filename))
-      return 'file uploaded successfully'
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            ## clear cache if needed
+            files = os.listdir(app.config['UPLOAD_FOLDER'])
+            for f in files:
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return ("UPLOADED:" + filename)
+    return render_template('index.html')
 
 if __name__ == "__main__":
     ## parse arguments for debug mode
