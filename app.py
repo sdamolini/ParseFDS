@@ -37,10 +37,16 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            FDS2Excel(os.path.join(app.config['UPLOAD_FOLDER'], filename), OUTPUT_FOLDER+"/"+"output.xlsx")
+            ## clear output folder
+            files = os.listdir(app.config['OUTPUT_FOLDER'])
+            for f in files:
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
+
+            ## Run the parsing
+            FDS2Excel(os.path.join(app.config['UPLOAD_FOLDER'], filename), os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"))
 
             # return ("UPLOADED:" + filename)
-            return send_file(OUTPUT_FOLDER+"/"+"output.xlsx", attachment_filename='output.xlsx')
+            return send_file(os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"), attachment_filename='output.xlsx')
 
     return render_template('index.html')
 
