@@ -1,11 +1,12 @@
 import os
-from flask import Flask, flash, request, jsonify, render_template
+from flask import Flask, flash, request, jsonify, render_template, send_file
 from werkzeug.utils import secure_filename
 import argparse
 import numpy as np
 from model import *
 
 UPLOAD_FOLDER = './uploads'
+OUTPUT_FOLDER = 'output'
 ALLOWED_EXTENSIONS = {'txt', 'out'}
 
 app = Flask(__name__)
@@ -36,8 +37,9 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            FDS2Excel(input_file=os.path.join(app.config['UPLOAD_FOLDER'], filename), output_name="output.xlsx")
-            return ("UPLOADED:" + filename)
+            FDS2Excel(input_file=os.path.join(app.config['UPLOAD_FOLDER'], filename), output_name=OUTPUT_FOLDER+'/'+"output.xlsx")
+            # return ("UPLOADED:" + filename)
+            return send_file(OUTPUT_FOLDER+'/'+"output.xlsx", attachment_filename='output.xlsx')
 
     return render_template('index.html')
 
