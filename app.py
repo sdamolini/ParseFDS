@@ -1,12 +1,12 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
-import pickle
+# import pickle
 
 # create flask app
 app = Flask(__name__)
 
-# load model
-model = pickle.load(open('model.pkl', 'rb'))
+# # load model
+# model = pickle.load(open('model.pkl', 'rb'))
 
 # home page
 @app.route('/')
