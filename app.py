@@ -47,7 +47,7 @@ def upload_file():
             FDS2Excel(os.path.join(app.config['UPLOAD_FOLDER'], filename), os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"))
 
             # return ("UPLOADED:" + filename)
-            return send_file(os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"), attachment_filename='output.xlsx')
+            return send_file(os.path.join(app.config['OUTPUT_FOLDER'], "output.xlsx"))
 
     return render_template('index.html')
 
