@@ -1,8 +1,0 @@
-pandas
-datetime
-pathlib
-flask
-openpyxl
-
-
-pip3 freeze > requirements.txt
