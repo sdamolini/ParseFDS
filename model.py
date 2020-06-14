@@ -91,36 +91,45 @@ def FDS2Excel(input_file=default_input, output_name="output.xlsx"):
 		if end_words in l:
 			break
 		# print(l)
+	
 	  
-	df=pd.DataFrame(full_list)
-	df.iloc[:,2]=df.iloc[:,1]
-	df.iloc[:,2]=df.iloc[:,2].apply(lambda x: \
-									(datetime.datetime.strptime(x, '%B %d, %Y %H:%M:%S') - \
-										datetime.datetime.strptime(df.iloc[0,1], \
-																   '%B %d, %Y %H:%M:%S')).total_seconds())
-	df.iloc[:,3]=df.iloc[:,2]/86400
+	
+
+	if full_list != []:
+		df=pd.DataFrame(full_list)
+		df.iloc[:,2]=df.iloc[:,1]
+		df.iloc[:,2]=df.iloc[:,2].apply(lambda x: \
+										(datetime.datetime.strptime(x, '%B %d, %Y %H:%M:%S') - \
+											datetime.datetime.strptime(df.iloc[0,1], \
+																	'%B %d, %Y %H:%M:%S')).total_seconds())
+		df.iloc[:,3]=df.iloc[:,2]/86400
+	
+
+			
+		# March 16, 2020  17:41:50
+		# d1= datetime.datetime.strptime(df.iloc[0,1], '%B %d, %Y %H:%M:%S')
+		# d2= datetime.datetime.strptime(df.iloc[1,1], '%B %d, %Y %H:%M:%S')
+		# d3=d2-d1
+		# print(int(d3.total_seconds()))
+
 		
-		
+		df.to_excel(output_name, \
+										header=["Time step", "Date", "Computational time (s)", "Computational time (days)", "Step size (s)", "Simulation time (s)", \
+												"Pressure iterations", "Maximum Velocity Error", "At Mesh", "At Cell",\
+													"Maximum Pressure Error", "At Mesh", "At Cell"]
+		, \
+											index=False)
 
 
-	# March 16, 2020  17:41:50
-	# d1= datetime.datetime.strptime(df.iloc[0,1], '%B %d, %Y %H:%M:%S')
-	# d2= datetime.datetime.strptime(df.iloc[1,1], '%B %d, %Y %H:%M:%S')
-	# d3=d2-d1
-	# print(int(d3.total_seconds()))
-
-	 
-
-
-	df.to_excel(output_name, \
+	else:
+		pd.DataFrame(["The input full that was uploaded is not supported"]+[0]*12).to_excel(output_name, \
 									 header=["Time step", "Date", "Computational time (s)", "Computational time (days)", "Step size (s)", "Simulation time (s)", \
 											 "Pressure iterations", "Maximum Velocity Error", "At Mesh", "At Cell",\
 												 "Maximum Pressure Error", "At Mesh", "At Cell"]
 	, \
 										 index=False)
 
-	# print(full_list)
-		
+
 	print('Parsing successful.')
 
 if __name__ == "__main__":
